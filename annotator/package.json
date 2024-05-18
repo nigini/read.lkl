@@ -1,0 +1,20 @@
+{
+  "name": "annotate.lkl",
+  "version": "0.1.0",
+  "description": "A simple annotation tool for LKL webpages.",
+  "exports": "annotator.mjs",
+  "scripts": {
+    "build": "webpack"
+  },
+  "keywords": [],
+  "author": "Nigini Oliveira",
+  "license": "ISC",
+  "dependencies": {
+    "@apache-annotator/dom": "^0.2.0",
+    "@apache-annotator/selector": "^0.2.0"
+  },
+  "devDependencies": {
+    "webpack": "^5.91.0",
+    "webpack-cli": "^5.1.4"
+  }
+}

@@ -10,7 +10,7 @@
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
 <body>
-<div class="container">
+<div id="whole" class="container">
     <div id="metadata">
         <h1>{{ title }}</h1>
         <p>Author: {{ author }}</p>
@@ -23,4 +23,30 @@
     </div>
 </div>
 </body>
+
+<script type="module">
+    import * as annotator from "/assets/js/annotate-lkl.mjs";
+    window.annotator = annotator;
+
+    //
+    document.addEventListener('mouseup', async () => {
+      const selector = await annotator.describeCurrentSelection();
+      const existingSelectors = JSON.parse(localStorage[document.URL] || '[]');
+      localStorage[document.URL] = JSON.stringify([...existingSelectors, selector]);
+      await annotator.highlightSelectorTarget(selector);
+    });
+
+    // Highlight the last selection that was stored, if any.
+    async function highlightStoredSelectors() {
+      if (localStorage[document.URL]) {
+        const selectors = JSON.parse(localStorage[document.URL]);
+        for (const selector of selectors) {
+          await annotator.highlightSelectorTarget(selector);
+        }
+      }
+    }
+
+    highlightStoredSelectors();
+</script>
+
 </html>

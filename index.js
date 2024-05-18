@@ -8,7 +8,9 @@ const express = require('express');
 const {JSDOM} = require("jsdom");
 const {Readability} = require("@mozilla/readability");
 const Handlebars = require("handlebars");
+
 const app = express();
+app.use(express.static("./static/"));
 
 let article_template = "";
 
