@@ -6,32 +6,56 @@ The main values are:
 
 - local first: 
 - simplified text layout:
-- web standards: 
-- innovation: 
+- web standards:
+
+## TEST IT
+DEMO server coming soon!!!
 
 ## Road Map and Functionalities
 
 ### Load an external URL
 
-- The simplest version possible is now implemented: you just need to load the main page with a `?this=URL` attribute to the URL.
+Right now this thing is using Express to process requests:
 
-### Parse document with [mozilla/Readability](https://github.com/mozilla/readability)
+ - TODO: Maybe we can do it all serverless???
 
-- This is being done by default now. Maybe we need a configuration to say we need the full page?
+The simplest version possible is now implemented: 
+you just need to load the main page by adding `?this=<URL>` to the main page
+(where `<URL>` is the page you want to read).
 
-### Add web annotation with [apache/annotator](https://annotator.apache.org/docs/getting-started/)
+### Reading Mode
 
-- Created a very rough "annotate-lkl" module based on the [Get Started code!](https://annotator.apache.org/docs/getting-started/)
-- This only adds a yellow highlight and stores the annotation to the browser storage.
-- TODO:
-  - Improve highlight tool, adding at least colors
-  - Ability to save annotations in the document (which will only be useful if the user has the JS module locally!?)
-  - 
+I LOVE the reading experience where popular browsers simplify the page, 
+removing all the bloat content (like ads, menus, colors, etc.)
 
-### Export page to HTML file
+- We are simplifying the loaded page with [mozilla/Readability](https://github.com/mozilla/readability). 
+- TODO: Maybe we need a configuration to say we need the full page?
 
-- TODO
+### Web annotation
 
+Who doesn't like to read highlighting stuff?
+I am using the annotation web standard as implemented by [apache/annotator](https://annotator.apache.org/docs/getting-started/).
+
+- Implemented the "annotate-lkl" module based on the [Get Started code!](https://annotator.apache.org/docs/getting-started/)
+- This only adds a yellow highlight and changes to orange when clicked.
+- TODO: Improve annotation tools:
+  - add color buttons
+  - add remove highlight
+  - add note
+
+### Save HTML page 
+
+- TODO: Ability to save annotations in the document and load the page (TOTALLY LKL!)
+
+  
 ### Save web annotation separately
 
 - TODO
+
+
+## HOW TO RUN IT?
+
+> npm install
+> node index.js
+
+Yep, if you have `node` and `npm` it is this simple. 

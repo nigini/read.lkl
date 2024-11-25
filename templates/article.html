@@ -14,7 +14,7 @@
     <div id="metadata">
         <h1>{{ title }}</h1>
         <p>Author: {{ author }}</p>
-        <p>Source: <a href="{{ url }}" target="_blank">{{ site_name }}</a></p>
+        <p>Source: <a href="{{ url }}" target="_blank">{{ site_name }} {{#unless site_name}} {{ url }} {{/unless}}</a></p>
         <p>Date: {{ published_time }}</p>
     </div>
     <hr>
@@ -27,26 +27,22 @@
 <script type="module">
     import * as annotator from "/assets/js/annotate-lkl.mjs";
     window.annotator = annotator;
-
-    //
-    document.addEventListener('mouseup', async () => {
-      const selector = await annotator.describeCurrentSelection();
-      const existingSelectors = JSON.parse(localStorage[document.URL] || '[]');
-      localStorage[document.URL] = JSON.stringify([...existingSelectors, selector]);
-      await annotator.highlightSelectorTarget(selector);
-    });
-
-    // Highlight the last selection that was stored, if any.
-    async function highlightStoredSelectors() {
-      if (localStorage[document.URL]) {
-        const selectors = JSON.parse(localStorage[document.URL]);
-        for (const selector of selectors) {
-          await annotator.highlightSelectorTarget(selector);
-        }
-      }
+    window.highlight_callback = () => {
+        annotator.openEditMenu(event.target.id);
     }
-
-    highlightStoredSelectors();
+    annotator.setup('highlight_callback()');
+    document.addEventListener('mouseup', annotator.highlightCurrentSelection);
+    annotator.refreshHighlights();
 </script>
+
+<style>
+    body {
+        --default-highlight-color: yellow;
+    }
+    mark-lkl {
+        cursor: pointer;
+        background-color: var(--default-highlight-color);
+    }
+</style>
 
 </html>
