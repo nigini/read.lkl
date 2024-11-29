@@ -1,4 +1,4 @@
-# Read.LKL
+# Read.LKL (v 0.3.0)
 
 Read.LKL (reads: read local) is an attempt to build a simple reader (with web-annotation) for HTML documents.
 
@@ -13,15 +13,12 @@ DEMO server coming soon!!!
 
 ## Road Map and Functionalities
 
-### Load an external URL
-
-Right now this thing is using Express to process requests:
-
- - TODO: Maybe we can do it all serverless???
-
 The simplest version possible is now implemented: 
-you just need to load the main page by adding `?this=<URL>` to the main page
-(where `<URL>` is the page you want to read).
+you just need to load the main page `reader.html` 
+from an HTTP server configure to serve the `static` folder as `/`. 
+
+By adding `?READ=<URL>` to this reader page, (where `<URL>` is the public web page you want to read),
+the reader will load, simplify, and show it with annotations enabled. **Just select text to highlight!**
 
 ### Reading Mode
 
@@ -34,6 +31,7 @@ removing all the bloat content (like ads, menus, colors, etc.)
 ### Web annotation
 
 Who doesn't like to read highlighting stuff?
+
 I am using the annotation web standard as implemented by [apache/annotator](https://annotator.apache.org/docs/getting-started/).
 
 - Implemented the "annotate-lkl" module based on the [Get Started code!](https://annotator.apache.org/docs/getting-started/)
@@ -55,7 +53,17 @@ I am using the annotation web standard as implemented by [apache/annotator](http
 
 ## HOW TO RUN IT?
 
+### NODE
+
+Just runs an HTTP server with `express`:
 > npm install
 > node index.js
 
-Yep, if you have `node` and `npm` it is this simple. 
+### PYTHON
+
+Just run a simple HTTP server with `python`:
+*DO NOT use in production*
+
+> cd static
+> python -m http.server
+

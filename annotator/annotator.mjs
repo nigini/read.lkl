@@ -1,5 +1,5 @@
 import {describeTextQuote, createTextQuoteSelectorMatcher, highlightText} from '@apache-annotator/dom';
-import {computePosition} from 'https://cdn.jsdelivr.net/npm/@floating-ui/dom@1.6.12/+esm';
+import {Readability} from "@mozilla/readability";
 
 let STORAGE = null;
 
@@ -50,7 +50,7 @@ async function describeCurrentSelection() {
 
 // *** EXPORTS *** //
 
-function setup(
+function setupAnnotator(
     highlightClickCallbackStr,
     storageStrategy=BROWSER_STORAGE
 ) {
@@ -94,4 +94,11 @@ function openEditMenu(elem_id) {
     }
 }
 
-export {setup, highlightCurrentSelection, refreshHighlights, openEditMenu};
+function minimizeHTML(full_page_html, readability_options={}) {
+    let iframe_doc = document.getElementById('original-document').contentDocument
+    iframe_doc.write(full_page_html);
+    let reader = new Readability(iframe_doc, readability_options);
+    return reader.parse();
+}
+
+export {minimizeHTML, setupAnnotator, highlightCurrentSelection, refreshHighlights, openEditMenu};

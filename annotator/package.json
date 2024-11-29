@@ -1,6 +1,6 @@
 {
   "name": "annotate.lkl",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "A simple annotation tool for LKL webpages.",
   "exports": "annotator.mjs",
   "scripts": {
@@ -11,7 +11,8 @@
   "license": "ISC",
   "dependencies": {
     "@apache-annotator/dom": "^0.2.0",
-    "@apache-annotator/selector": "^0.2.0"
+    "@apache-annotator/selector": "^0.2.0",
+    "@mozilla/readability": "^0.5.0"
   },
   "devDependencies": {
     "webpack": "^5.91.0",
