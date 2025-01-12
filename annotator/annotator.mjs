@@ -2,15 +2,16 @@ import {describeTextQuote, createTextQuoteSelectorMatcher, highlightText} from '
 import {Readability} from "@mozilla/readability";
 
 let STORAGE = null;
+let DOCUMENT_ID = null;
 
 const BROWSER_STORAGE = {
     getData: () => {
-        return Object.values(JSON.parse(localStorage[document.URL] || '{}'));
+        return Object.values(JSON.parse(localStorage[DOCUMENT_ID] || '{}'));
     },
     addToStorage: (annotation) => {
-        let data = JSON.parse(localStorage[document.URL] || '{}');
+        let data = JSON.parse(localStorage[DOCUMENT_ID] || '{}');
         data[annotation.id] = annotation;
-        localStorage[document.URL] = JSON.stringify(data);
+        localStorage[DOCUMENT_ID] = JSON.stringify(data);
     }
 }
 
@@ -31,15 +32,22 @@ let CONFIG = {
     },
 }
 
-async function highlight(annotation) {
-    const matches = createTextQuoteSelectorMatcher(annotation.selector)(document.body);
-    const matchList = [];
-    for await (const match of matches) matchList.push(match);
-    let match = matchList[0];
-    if(!annotation.id) annotation.id = Date.now().toString();
-    CONFIG.attributes.id = annotation.id;
-    CONFIG.attributes.style = `background-color: ${annotation.color};`;
-    highlightText(match, CONFIG.tag, CONFIG.attributes);
+async function highlight(annotation, scope=document.body) {
+    const matches = createTextQuoteSelectorMatcher(annotation.selector)(scope);
+    let matchList = [];
+    for await (let match of matches) {
+        console.log("MATCH", match);
+        matchList.push(match);
+    }
+    let first_match = matchList[0];
+    if(first_match) {
+        if(!annotation.id) annotation.id = Date.now().toString();
+        CONFIG.attributes.id = annotation.id;
+        CONFIG.attributes.style = `background-color: ${annotation.color};`;
+        highlightText(first_match, CONFIG.tag, CONFIG.attributes);
+    } else {
+        console.error("No match found for selector", annotation.selector);
+    }
 }
 
 async function describeCurrentSelection() {
@@ -52,8 +60,10 @@ async function describeCurrentSelection() {
 
 function setupAnnotator(
     highlightClickCallbackStr,
-    storageStrategy=BROWSER_STORAGE
+    storageStrategy=BROWSER_STORAGE,
+    document_id=document.URL
 ) {
+    DOCUMENT_ID = document_id;
     STORAGE = storageStrategy;
     CONFIG.attributes.onclick = highlightClickCallbackStr;
 }
@@ -70,6 +80,7 @@ async function highlightCurrentSelection() {
 async function refreshHighlights() {
     if (STORAGE) {
         for (const annotation of STORAGE.getData()) {
+            console.log("HIGHLIGHT", annotation)
             await highlight(annotation);
         }
     }

@@ -53,6 +53,15 @@ I am using the annotation web standard as implemented by [apache/annotator](http
 
 ## HOW TO RUN IT?
 
+This should be as easy to run as loading the `reader.html` into your browser.
+**BUT** life is not that easy: when you'd try to load an external page through your "local" reader,
+most HTTP servers will not let you to process their content via code (i.e., CORS stuff.).
+
+Hence, we could run this right now in two ways:
+  1. either you use a proxy server that will download the content to you (which we implement in the current reader);
+  2. (DOUBLE CHECK) or you download the page you want to read and serve it locally
+  3. (IDEA) can one load the content from another TAB in the same browser session? (likely the best as this would inherit all browser permission, in case of paywall.)
+
 ### NODE
 
 Just runs an HTTP server with `express`:

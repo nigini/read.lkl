@@ -22,6 +22,7 @@
 </body>
 
 <script type="module">
+    const PROXY_URL = "http://localhost:7777/fetch?URL=";
     import * as annotator from "/assets/js/annotate-lkl.mjs";
     window.annotator = annotator;
     let article_template = Handlebars.compile(document.getElementById("article-template").innerHTML);
@@ -41,7 +42,7 @@
         if (this_url.searchParams.has('READ')) {
             document.getElementById('message').classList.add('visually-hidden');
             let url = this_url.searchParams.get('READ');
-            fetch(url).then(function (response) {
+            fetch(PROXY_URL+url).then(function (response) {
                 if (response.ok) {
                     response.text().then((text) => {
                         let parsed_article = annotator.minimizeHTML(text);
@@ -54,6 +55,8 @@
                             content: parsed_article.content
                         })
                         document.getElementById("article").classList.remove("visually-hidden");
+                        setup_annotator();
+                        annotator.refreshHighlights();
                     });
                 } else {
                     error_message = `Couldn't load ${url}! :(`;
@@ -76,9 +79,6 @@
             reload_page();
         }
     };
-
-    setup_annotator();
-    annotator.refreshHighlights();
 </script>
 
 <script id="article-template" type="text/x-handlebars-template">
